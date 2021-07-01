@@ -7,11 +7,11 @@ theme = "hugo-business-frontpage-theme"
 googleAnalytics = "UA-XXXXXXX-Y"
 
 [params]
-    author = "CowboySmall"
-    description = "Business Frontpage - A business home page starter template for Bootstrap 4 featuring marketing boxes and a full width image header"
+    author = "Carlos Ravelo"
+    description = "The Stamford Norwalk Area Gamers website. Find upcoming and past events, news and other group information."
 
     [params.navbar]
-        name = "Start Bootstrap"
+        name = "SNAGs CT"
         url = "#"
 
         [[params.navbar.nav]]
@@ -20,34 +20,33 @@ googleAnalytics = "UA-XXXXXXX-Y"
         url = "#"
         [[params.navbar.nav]]
         name = "About"
-        url = "#"
+        url = "/about"
         [[params.navbar.nav]]
-        name = "Services"
-        url = "#"
+        name = "Events"
+        url = "/events"
         [[params.navbar.nav]]
         name = "Contact"
-        url = "#"
+        url = "/contact"
 
     [params.header]
-        name = "Business Name or Tagline"
-        tagline = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non possimus ab labore provident mollitia. Id assumenda voluptate earum corporis facere quibusdam quisquam iste ipsa cumque unde nisi, totam quas ipsam."
+        name = "Stamford Norwalk Area Gamers (SNAGsCT)"
+        tagline = "The Stamford Norwalk Area Gamers website. Find upcoming and past events, news and other group information."
 
     [params.summary]
-        url = "#"
+        url = "/events"
 
         [params.summary.description]
-
         [[params.summary.description.items]]
-        description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A deserunt neque tempore recusandae animi soluta quasi? Asperiores rem dolore eaque vel, porro, soluta unde debitis aliquam laboriosam. Repellat explicabo, maiores!"
+        description = "Find our upcoming and past events and access our shared calendar!"
         [[params.summary.description.items]]
-        description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis optio neque consectetur consequatur magni in nisi, natus beatae quidem quam odit commodi ducimus totam eum, alias, adipisci nesciunt voluptate. Voluptatum."
+        description = "For questions about a specific event, leave a comment on that event's page."
 
         [params.summary.contact]
-        name = "Start Bootstrap"
-        address1 = "3481 Melrose Place"
-        address2 = "Beverly Hills, CA 90210"
-        phone = "(123) 456-7890"
-        email = "name@example.com"
+        name = "SNAGsCT"
+#        address1 = "3481 Melrose Place"
+#        address2 = "Beverly Hills, CA 90210"
+#        phone = "(123) 456-7890"
+        email = "Do we want this?@example.com"
 
     [params.projects]
 
@@ -55,13 +54,13 @@ googleAnalytics = "UA-XXXXXXX-Y"
         # title = "Section 1"
 
         [[params.projects.sections.rows]]
-        # title = "Section 1, Row 1"
+#         title = "Section 1, Row 1"
 
         [[params.projects.sections.rows.items]]
         title = "Card title 1"
         description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque sequi doloribus."
         url = "#"
-        # image = "image.png"
+        image = "image.jpeg"
         [[params.projects.sections.rows.items]]
         title = "Card title 2"
         description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque sequi doloribus totam ut praesentium aut."
@@ -120,4 +119,4 @@ googleAnalytics = "UA-XXXXXXX-Y"
         # image = "image.png"
 
     [params.footer]
-        copyright = "Your Website"
+        copyright = "Copyright © SNAGsCT"
