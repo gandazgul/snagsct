@@ -3,7 +3,7 @@ backend:
   repo: gandazgul/snagsct.tk
   branch: main
 
-media_folder: assets/images
+media_folder: public/img
 
 collections:
 - name: 'post'
@@ -29,5 +29,5 @@ collections:
     file: 'about.md'
     fields:
     - { label: 'Title', name: 'title', widget: 'hidden', default: 'about' }
-    - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'about' }
+    - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'page' }
     - { label: 'Body', name: 'body', widget: 'markdown' }
