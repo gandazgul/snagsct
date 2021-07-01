@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: gandazgul/snagsct.tk
+  branch: main
+
+media_folder: assets/images
+
+collections:
+- name: 'post'
+  label: 'Post'
+  folder: '_posts'
+  create: true
+  slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+  fields:
+  - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'post' }
+  - { label: 'Title', name: 'title', widget: 'string' }
+  - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+  - { label: 'Image', name: 'image', widget: 'image' }
+  - { label: 'Description', name: 'description', widget: 'string' }
+  - { label: 'Body', name: 'body', widget: 'markdown' }
+
+- name: 'pages'
+  label: 'Pages'
+#  editor:
+#    preview: false
+  files:
+  - label: 'About Page'
+    name: 'about'
+    file: 'about.md'
+    fields:
+    - { label: 'Title', name: 'title', widget: 'hidden', default: 'about' }
+    - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'about' }
+    - { label: 'Body', name: 'body', widget: 'markdown' }

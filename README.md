@@ -13,7 +13,7 @@ Also, on Facebook: https://www.facebook.com/groups/SNAGsCT and our sister group 
 
 ## Site technology
 
-The site is built with Hugo and managed with NetlifyCMS. Deployed with Nginx Docker to k8s. Certificates by Let's Encrypt.
+The site is built with Jekyll and managed with NetlifyCMS. Deployed with Nginx Docker to k8s. Certificates by Let's Encrypt.
 
 ## Issues
 
