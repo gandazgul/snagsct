@@ -1,18 +1,11 @@
 ---
-layout: page
 title: About
+layout: page
 permalink: /about/
 ---
+SNAGs stands for Stamford Norwalk Area Gamers. We are a group of board game enthusiasts that meet regularly to play and 
+hangout. 
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Find us on our website: https://www.snagsct.tk/.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+Also, on Facebook: https://www.facebook.com/groups/SNAGsCT and our sister group on Meetup: https://www.meetup.com/stamford-board-games-group
