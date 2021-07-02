@@ -9,5 +9,3 @@ hangout.
 Find us on our website: <https://www.snagsct.tk/>.
 
 Also, on Facebook: <https://www.facebook.com/groups/SNAGsCT> and our sister group on Meetup: <https://www.meetup.com/stamford-board-games-group>
-
-TESTING THE CMS
