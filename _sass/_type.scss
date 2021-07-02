@@ -112,4 +112,8 @@ a[href^="#fnref:"] {
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
+
+  .acronym-letter{ font-size: 1.4rem; }
+
+  .acronym-letter, .acronym-letter-2 { color: rgba(255,255,255,.8); }
 }
