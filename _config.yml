@@ -2,11 +2,8 @@
 permalink:        pretty
 #relative_permalinks: true
 
-title: SNAGs CT
+title: SNAGs
 tagline: 'Our meeting place'
-description: >- # this means to ignore newlines until "baseurl:"
-  Stamford Norwalk Area Gamers. We are a group of board game enthusiasts that meet regularly to play and
-  hangout.
 url: "https://www.snagsct.tk"
 baseurl: /
 github_username: gandazgul
@@ -44,4 +41,4 @@ author:
   email: ravelo.carlos@gmail.com
 
 # Custom vars
-version: 2.1.0
+version: 1.0.0

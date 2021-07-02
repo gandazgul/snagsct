@@ -263,6 +263,9 @@ tbody tr:nth-child(odd) th {
   font-weight: 300;
 }
 
+.lead .acronym-letter{ font-size: 1.4rem; }
+
+.lead .acronym-letter, .lead .acronym-letter-2 { color: rgba(255,255,255,.8); }
 
 /*
  * Messages
