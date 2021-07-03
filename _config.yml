@@ -18,7 +18,8 @@ plugins:
 
 exclude:
 - .editorconfig
-- .git
+- .git/
+- .idea/
 - .jekyll-cache
 - Gemfile
 - Gemfile.lock

@@ -6,32 +6,35 @@ title: Home
 <div class="posts">
     {% for post in paginator.posts %}
     <div class="post">
-        {% if post.image %}
-        <div class="post-image">
-            <img src="{{ post.image }}" alt=""/>
-        </div>
-        {% endif %}
-        <div class="post-details">
-            <h1 class="post-title">
-                <a href="{{ post.url }}">
-                    {{ post.title }}
-                </a>
-            </h1>
+        <div class="post-header">
+            {% if post.image %}
+            <div class="post-image">
+                <img src="{{ post.image }}" alt=""/>
+            </div>
+            {% endif %}
+            <div class="post-details">
+                <h1 class="post-title">
+                    <a href="{{ post.url }}">
+                        {{ post.title }}
+                    </a>
+                </h1>
 
-            <span class="post-date">{{ post.date | date_to_string }}</span>
-
-            {{ post.content }}
+                <span class="post-date">{{ post.date | date_to_string }}</span>
+            </div>
         </div>
+        {{ post.content }}
     </div>
     {% endfor %}
 </div>
 
+{% if paginator.total_pages > paginator.per_page %}
 <div class="pagination">
     {% if paginator.next_page %}
     <a class="pagination-item older" href="/page{{paginator.next_page}}">Older</a>
     {% else %}
     <span class="pagination-item older">Older</span>
     {% endif %}
+
     {% if paginator.previous_page %}
     {% if paginator.page == 2 %}
     <a class="pagination-item newer" href="/">Newer</a>
@@ -42,3 +45,4 @@ title: Home
     <span class="pagination-item newer">Newer</span>
     {% endif %}
 </div>
+{% endif %}

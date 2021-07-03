@@ -73,6 +73,11 @@ html {
 /* Sidebar links */
 .sidebar a {
   color: #fff;
+  text-decoration: none;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  text-decoration: underline;
 }
 
 /* About section */
