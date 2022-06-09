@@ -8,4 +8,4 @@ hangout.
 
 Find us on our website: <https://www.snagsct.tk/>.
 
-Also [h](https://www.facebook.com/groups/SNAGsCT) on Meetup: <https://www.meetup.com/stamford-board-games-group>
+Also on Meetup: <https://www.meetup.com/stamford-board-games-group>
