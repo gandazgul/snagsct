@@ -1,5 +1,6 @@
-_site
+_site/
 .sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
+.jekyll-cache/
+.jekyll-metadata/
+vendor/
+firebase-debug.log
