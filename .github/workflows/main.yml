@@ -35,4 +35,4 @@ jobs:
         run: cd ./queue/ && yarn
       
       - name: Run build
-        run: node ./scripts/build.js
+        run: node ./queue/scripts/build.js
