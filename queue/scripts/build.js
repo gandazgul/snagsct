@@ -29,4 +29,4 @@ for (const asset of assets.entrypoints) {
 }
 fs.writeFileSync(path.join(rootFolder, 'queue.html'), `${htmlContents}${scripts.join('\n')}`);
 
-execSync('jekyll build', { stdio: 'inherit' });
+execSync('bundle exec jekyll build', { stdio: 'inherit' });
