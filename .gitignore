@@ -7,7 +7,8 @@ firebase-debug.log
 queue/firebase-debug.log
 
 # queue files
-manifest.json
 queue_app.html
 queue.html
+public/manifest.json
+public/apple-touch-icon-144-precomposed.png
 public/static/
