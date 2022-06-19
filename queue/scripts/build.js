@@ -12,7 +12,7 @@ fs.removeSync(path.join(rootFolder, '_site'));
 execSync('yarn build', { stdio: 'inherit', cwd: queueFolder });
 
 fs.copyFileSync(path.join(buildFolder, 'index.html'), path.join(rootFolder, 'queue_app.html'));
-fs.copyFileSync(path.join(buildFolder, 'manifest.json'), path.join(rootFolder, 'manifest.json'));
+fs.copyFileSync(path.join(buildFolder, 'manifest.json'), path.join(rootFolder, 'public', 'manifest.json'));
 fs.copyFileSync(path.join(buildFolder, 'apple-touch-icon-144-precomposed.png'), path.join(rootFolder, 'public', 'apple-touch-icon-144-precomposed.png'));
 fs.copySync(path.join(buildFolder, 'static'), path.join(rootFolder, 'public', 'static'));
 
