@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>SNAGs</title>
+ <link href="https://www.snagsct.tk/atom.xml" rel="self"/>
+ <link href="https://www.snagsct.tk/"/>
+ <updated>2022-06-19T18:50:38+00:00</updated>
+ <id>https://www.snagsct.tk</id>
+ <author>
+   <name>Carlos Ravelo</name>
+   <email>ravelo.carlos@gmail.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>Welcome to the SNAGs CT site</title>
+   <link href="https://www.snagsct.tk/2021/07/01/welcome-to-the-snags-ct-site/"/>
+   <updated>2021-07-01T22:21:22+00:00</updated>
+   <id>https://www.snagsct.tk/2021/07/01/welcome-to-the-snags-ct-site</id>
+   <content type="html">&lt;p&gt;Welcome to our new site.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>
