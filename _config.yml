@@ -21,6 +21,7 @@ exclude:
 - .git/
 - .idea/
 - .jekyll-cache
+- queue/
 - Gemfile
 - Gemfile.lock
 - LICENSE.md
