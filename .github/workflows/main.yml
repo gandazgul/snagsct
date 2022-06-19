@@ -30,18 +30,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
           
-      - name: Install deps
-        run: cd ./queue/ && yarn
+      - name: 🔨 Install deps
+        run: cd ./queue/ && yarn install --frozen-lockfile # optional, --immutable
 
       # Use ruby/setup-ruby to shorten build times
       # https://github.com/ruby/setup-ruby
-      - uses: ruby/setup-ruby@v1
+      - name: 💎 Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-      - name: Run build
+      - name: ⚙️ Run build
         run: node ./queue/scripts/build.js
 
       # use jekyll-action-ts to build
