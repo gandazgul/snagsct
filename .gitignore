@@ -4,10 +4,10 @@ _site/
 .jekyll-metadata/
 vendor/
 firebase-debug.log
+queue/firebase-debug.log
 
 # queue files
-manifest.json
-queue_app.html
-queue.html
-public/css/
-public/js/
+./manifest.json
+./queue_app.html
+./queue.html
+public/static/
