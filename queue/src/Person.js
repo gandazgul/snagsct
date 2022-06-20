@@ -215,6 +215,7 @@ function Person(props) {
             </AccordionDetails>
             <ConditionalDisplay name={SCREENS.MAIN} activeScreen={addGameVisible ? SCREENS.ADD_GAME : SCREENS.MAIN}>
                 <AccordionActions>
+                    <Button variant="contained" color="secondary" onClick={props.handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button>
                     {person.bggID ? <Button variant="outlined" onClick={handleGoToPersonProfile}><Icon>open_in_new</Icon> BGG Profile</Button> : null}
                     {hasEnoughGames ? null : (<Button variant="contained" onClick={handleClick}><Icon>add</Icon> Add game</Button>)}
                 </AccordionActions>

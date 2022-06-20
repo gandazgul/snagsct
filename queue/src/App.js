@@ -72,7 +72,7 @@ function App() {
             <ResponsiveAppBar user={firebase.auth().currentUser} handleSignOut={handleSignOut} />
             {
                 isSignedIn ?
-                <Queue /> : (
+                <Queue user={firebase.auth().currentUser} /> : (
                     <Box style={{ padding: '1rem' }}>
                         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
                     </Box>

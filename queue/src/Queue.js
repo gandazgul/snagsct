@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { getDocs, collection, addDoc, setDoc } from 'firebase/firestore';
+import { isNumber } from 'lodash';
+import { getDocs, collection, doc, addDoc, setDoc } from 'firebase/firestore';
 import { Fab, Icon, TextField, Button, Stack } from '@mui/material';
 import ConditionalDisplay from './ConditionalDisplay';
 import PeopleAccordion from './PeopleAccordion';
 import { db } from './firebase';
 import { SCREENS } from './constants';
 
-function Queue() {
+function Queue(props) {
     const [activeScreen, setActiveScreen] = useState(0);
     const [config, setConfig] = useState(null);
     const [newPersonName, setNewPersonName] = useState('');
     const [newPersonBGGID, setNewPersonBGGID] = useState('');
+    const [newPersonID, setNewPersonID] = useState(null);
 
     useEffect(() => {
         if (!config) {
@@ -42,7 +44,8 @@ function Queue() {
                 // bottom of the queue
                 if (position === -1) {
                     queueOrder.push(personID);
-                } else {
+                }
+                else if (isNumber(position)) {
                     queueOrder = [
                         ...queueOrder.slice(0, position),
                         personID,
@@ -64,24 +67,53 @@ function Queue() {
         })();
     }
 
+    function addPerson(newPerson) {
+        (async () => {
+            try {
+                const { id, ...person } = newPerson;
+
+                if (newPerson.id) {
+                    await setDoc(
+                        doc(db, 'people', id),
+                        person
+                    );
+                    updateQueuePosition(id);
+                }
+                else {
+                    const docRef = await addDoc(
+                        collection(db, 'people'),
+                        person
+                    );
+                    updateQueuePosition(docRef.id);
+                }
+
+                setActiveScreen(SCREENS.MAIN);
+                setNewPersonBGGID('');
+                setNewPersonName('');
+                setNewPersonID(null);
+            }
+            catch (e) {
+                console.error('Error adding person: ', newPerson, e);
+            }
+        })();
+    }
+
     function handleAddPerson() {
         const newPerson = {
             games: [],
             name: newPersonName,
             bggID: newPersonBGGID,
         };
-        (async () => {
-            try {
-                const docRef = await addDoc(collection(db, 'people'), newPerson);
-                updateQueuePosition(docRef.id);
-                setActiveScreen(SCREENS.MAIN);
-                setNewPersonBGGID('');
-                setNewPersonName('');
-            }
-            catch (e) {
-                console.error('Error adding person: ', newPerson, e);
-            }
-        })();
+
+        if (newPersonID) { newPerson.id = newPersonID; }
+
+        addPerson(newPerson);
+    }
+
+    function handleSignUp() {
+        setNewPersonName(props.user.displayName);
+        setNewPersonID(props.user.uid);
+        handleShowNewPersonModal();
     }
 
     return (
@@ -91,6 +123,10 @@ function Queue() {
                 <Fab color="primary" aria-label="add" onClick={handleShowNewPersonModal} style={{ position: 'absolute', right: 16, bottom: 16 }} variant="extended">
                     <Icon>add</Icon>
                     Add Person
+                </Fab>
+                <Fab color="secondary" aria-label="add" onClick={handleSignUp} style={{ position: 'absolute', right: 185, bottom: 16 }} variant="extended">
+                    <Icon>add</Icon>
+                    Sign Up
                 </Fab>
             </ConditionalDisplay>
             <ConditionalDisplay name={SCREENS.ADD_PERSON} activeScreen={activeScreen} style={{ padding: 24 }}>

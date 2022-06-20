@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, deleteDoc } from 'firebase/firestore';
 import Person from './Person';
 import { db } from './firebase';
 
@@ -44,21 +44,43 @@ function PeopleAccordion(props) {
             };
 
             setPeople(newPeople);
-            setExpanded(false);
+            // setExpanded(false);
+        };
+    }
+
+    function handleDeletePerson(personID) {
+        return () => {
+            const { [personID]: deleted, ...newPeople } = people;
+
+            setPeople(newPeople);
+            // delete from queue order
+            props.updateQueuePosition(personID, null);
+
+            (async () => {
+                try {
+                    await deleteDoc(deleted.docRef);
+                }
+                catch (e) {
+                    console.error('Error updating config: ', e);
+                }
+            })();
         };
     }
 
     if (!people) { return null; }
 
-    return queueOrder.map((personID) => (
-        <Person key={personID}
-            person={people[personID]}
-            onPersonUpdated={onPersonUpdated(personID)}
-            updateQueuePosition={updateQueuePosition}
-            handleAccordionChange={handleAccordionChange}
-            expanded={expanded}
-        />
-    ));
+    return queueOrder.map((personID) =>
+        people[personID] ? (
+            <Person key={personID}
+                person={people[personID]}
+                onPersonUpdated={onPersonUpdated(personID)}
+                handleDeletePerson={handleDeletePerson(personID)}
+                updateQueuePosition={updateQueuePosition}
+                handleAccordionChange={handleAccordionChange}
+                expanded={expanded}
+            />
+        ) : null,
+    );
 }
 
 export default PeopleAccordion;

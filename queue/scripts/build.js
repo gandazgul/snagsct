@@ -14,8 +14,8 @@ execSync('yarn build', { stdio: 'inherit', cwd: queueFolder });
 fs.copyFileSync(path.join(buildFolder, 'index.html'), path.join(rootFolder, 'queue_app.html'));
 fs.copyFileSync(path.join(buildFolder, 'manifest.json'), path.join(rootFolder, 'public', 'manifest.json'));
 fs.copyFileSync(path.join(buildFolder, 'icon144.png'), path.join(rootFolder, 'icon144.png'));
-fs.copyFileSync(path.join(buildFolder, 'service-worker.js'), path.join(rootFolder, 'public', 'service-worker.js'));
-fs.copyFileSync(path.join(buildFolder, 'service-worker.js.LICENSE.txt'), path.join(rootFolder, 'public', 'service-worker.js.LICENSE.txt'));
+fs.copyFileSync(path.join(buildFolder, 'service-worker.js.LICENSE.txt'), path.join(rootFolder, 'service-worker.js.LICENSE.txt'));
+fs.copyFileSync(path.join(buildFolder, 'service-worker.js.map'), path.join(rootFolder, 'service-worker.js.map'));
 fs.copySync(path.join(buildFolder, 'static'), path.join(rootFolder, 'public', 'static'));
 
 const assets = fs.readJsonSync(path.join(buildFolder, 'asset-manifest.json'));
@@ -30,5 +30,8 @@ for (const asset of assets.entrypoints) {
     }
 }
 fs.writeFileSync(path.join(rootFolder, 'queue.html'), `${htmlContents}${scripts.join('\n')}`);
+
+const serviceWorkerContents = fs.readFileSync(path.join(buildFolder, 'service-worker.js'), 'utf8');
+fs.writeFileSync(path.join(rootFolder, 'service-worker.js'), serviceWorkerContents.replace(/\/public\/index\.html/g, '/index.html'));
 
 execSync('bundle exec jekyll build', { stdio: 'inherit' });

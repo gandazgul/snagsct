@@ -10,5 +10,8 @@ queue/firebase-debug.log
 queue_app.html
 queue.html
 public/manifest.json
+service-worker.js
+service-worker.js.map
+service-worker.js.LICENSE.txt
 icon144.png
 public/static/
