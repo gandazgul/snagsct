@@ -13,7 +13,9 @@ execSync('yarn build', { stdio: 'inherit', cwd: queueFolder });
 
 fs.copyFileSync(path.join(buildFolder, 'index.html'), path.join(rootFolder, 'queue_app.html'));
 fs.copyFileSync(path.join(buildFolder, 'manifest.json'), path.join(rootFolder, 'public', 'manifest.json'));
-fs.copyFileSync(path.join(buildFolder, 'apple-touch-icon-144-precomposed.png'), path.join(rootFolder, 'public', 'apple-touch-icon-144-precomposed.png'));
+fs.copyFileSync(path.join(buildFolder, 'icon144.png'), path.join(rootFolder, 'icon144.png'));
+fs.copyFileSync(path.join(buildFolder, 'service-worker.js'), path.join(rootFolder, 'public', 'service-worker.js'));
+fs.copyFileSync(path.join(buildFolder, 'service-worker.js.LICENSE.txt'), path.join(rootFolder, 'public', 'service-worker.js.LICENSE.txt'));
 fs.copySync(path.join(buildFolder, 'static'), path.join(rootFolder, 'public', 'static'));
 
 const assets = fs.readJsonSync(path.join(buildFolder, 'asset-manifest.json'));

@@ -24,17 +24,14 @@ const theme = createTheme({
     },
     palette: {
         // mode: 'dark',
-        background: {
-            main: '#f2e5e8',
-        },
         primary: {
-            main: '#800020',
+            main: '#90a959',
         },
         secondary: {
-            main: '#008060',
+            main: '#7259a9',
         },
         error: {
-            main: '#cd0033',
+            main: '#a00020',
         },
     },
 });

@@ -41,7 +41,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "dev": "start",
+        "dev": "yarn start",
         "build": "PUBLIC_URL=\"/public\" react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"

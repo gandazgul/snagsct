@@ -8,13 +8,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/public/apple-touch-icon-144-precomposed.png",
+      "src": "icon144.png",
       "type": "image/png",
       "sizes": "144x144"
     }
   ],
   "start_url": "/queue_app.html",
   "display": "standalone",
-  "theme_color": "#800020",
+  "theme_color": "#90a959",
   "background_color": "#f2e5e8"
 }

@@ -26,7 +26,7 @@ function ResponsiveAppBar(props) {
         <AppBar position="static" enableColorOnDark>
             <Container maxWidth="xl">
                 <Toolbar disableGutters style={{ justifyContent: 'space-between' }}>
-                    <img src="/public/apple-touch-icon-144-precomposed.png" alt="SNAGs Queue" height={40} />
+                    <img src="/icon144.png" alt="SNAGs Queue" height={40} />
                     <Typography
                         variant="h5"
                         noWrap
