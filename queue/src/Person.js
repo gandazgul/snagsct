@@ -5,7 +5,6 @@ import { xml2js } from 'xml-js';
 import { setDoc } from 'firebase/firestore';
 import ConditionalDisplay from './ConditionalDisplay';
 import GameCard from './GameCard';
-import { SCREENS } from './constants';
 import UserContext from './UserContext';
 
 function Person(props) {
