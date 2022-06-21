@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card, CardHeader, CardContent, CardActions, Button, IconButton, CardMedia, Typography, Box, Icon } from '@mui/material';
+import UserContext from './UserContext';
+import ConditionalDisplay from './ConditionalDisplay';
 
 function GameCard(props) {
-    const { id, name, thumbnail, description, gameInfo } = props;
+    const { game, person, handleMarkGameAsPlayed, handleDeleteGame } = props;
+    const { id, name, thumbnail, description, gameInfo } = game;
+    const currentUser = useContext(UserContext);
+    const userOwnsGameOrIsAdmin = currentUser.uid === person.id || currentUser.isAdmin;
+
     const {
         minPlayers,
         maxPlayers,
@@ -32,15 +38,17 @@ function GameCard(props) {
                         component="img"
                         image={thumbnail || 'https://picsum.photos/140'}
                         alt={name}
-                        style={{ height: 150, width: 150 }}
+                        style={{ height: '50%', width: '50%', maxWidth: 150 }}
                     />
                     <Typography component="p" variant="gameDescription" dangerouslySetInnerHTML={{ __html: description || '' }} />
                 </Box>
             </CardContent>
-            <CardActions>
-                <Button size="small" onClick={props.handleMarkGameAsPlayed(id)}>Mark as Played</Button>
-                <Button size="small" onClick={props.handleDeleteGame(id)}>Delete</Button>
-            </CardActions>
+            <ConditionalDisplay condition={userOwnsGameOrIsAdmin}>
+                <CardActions>
+                    <Button size="small" onClick={handleMarkGameAsPlayed(id)}>Mark as Played</Button>
+                    <Button size="small" onClick={handleDeleteGame(id)}>Delete</Button>
+                </CardActions>
+            </ConditionalDisplay>
         </Card>
     );
 }

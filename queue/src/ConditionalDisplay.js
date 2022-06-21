@@ -2,20 +2,16 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 function ConditionalDisplay(props) {
-    const { children, activeScreen, name, padding, ...other } = props;
+    const { children, condition, padding, ...other } = props;
 
-    return (
-        <Box
-            role="container"
-            hidden={activeScreen !== name}
-            id={`simple-ConditionalDisplay-${name}`}
-            aria-labelledby={`simple-tab-${name}`}
+    return condition ? (
+        <Box role="container"
             style={padding ? { padding: 24 } : {}}
             {...other}
         >
-            {activeScreen === name && children}
+            {children}
         </Box>
-    );
+    ) : null;
 }
 
 export default ConditionalDisplay;

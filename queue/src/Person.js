@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Icon, Autocomplete, Stack, Box, Button, TextField, CircularProgress, Typography } from '@mui/material';
 import _ from 'lodash';
 import { xml2js } from 'xml-js';
@@ -6,9 +6,11 @@ import { setDoc } from 'firebase/firestore';
 import ConditionalDisplay from './ConditionalDisplay';
 import GameCard from './GameCard';
 import { SCREENS } from './constants';
+import UserContext from './UserContext';
 
 function Person(props) {
     const { person, onPersonUpdated, updateQueuePosition, handleAccordionChange } = props;
+    const currentUser = useContext(UserContext);
 
     const [addGameVisible, setAddGameVisible] = React.useState(false);
     const [bggResults, setBGGResults] = React.useState([]);
@@ -16,7 +18,7 @@ function Person(props) {
     const [addingGame, setAddingGame] = React.useState(false);
     const [selectedGame, setSelectedGame] = React.useState(null);
     const [games, setGames] = React.useState(person.games);
-    const hasEnoughGames = games.length === 2;
+    const canAddGames = games.length < 2 && currentUser.uid === person.id;
 
     function handleClick() {
         setAddGameVisible(true);
@@ -178,46 +180,45 @@ function Person(props) {
             <AccordionDetails>
                 <Stack direction="column" spacing={2}>
                     {games.map((game) => (
-                        <GameCard {...game} handleDeleteGame={handleDeleteGame} handleMarkGameAsPlayed={handleMarkGameAsPlayed} key={game.id} />
+                        <GameCard game={game} person={person} handleDeleteGame={handleDeleteGame} handleMarkGameAsPlayed={handleMarkGameAsPlayed} key={game.id} />
                     ))}
                 </Stack>
-                {hasEnoughGames ?
-                 null : (
-                     <ConditionalDisplay name={SCREENS.ADD_GAME} activeScreen={addGameVisible ? SCREENS.ADD_GAME : SCREENS.MAIN} padding={true}>
-                         <Autocomplete
-                             onChange={handleNewGameName}
-                             value={selectedGame}
-                             // isOptionEqualToValue={(option, value) => option.id === value.id}
-                             options={bggResults}
-                             renderInput={(params) => (
-                                 <TextField id="outlined-basic"
-                                     label="Search BGG for a game to add"
-                                     variant="outlined"
-                                     value={bggSearch}
-                                     onChange={handleAddGameInputChange}
-                                     {...params}
-                                 />
-                             )}
-                         />
-                         <Box sx={{ mt: 1, mb: 1 }}>
-                             <Button variant="outlined" onClick={handleCancel} startIcon={<Icon>cancel</Icon>}>Cancel</Button>
-                             <Button variant="contained"
-                                 sx={{ ml: 1 }}
-                                 onClick={handleAddGame}
-                                 startIcon={addingGame ? <CircularProgress size={24} /> : <Icon>add</Icon>}
-                                 disabled={addingGame}
-                             >
-                                 Add game
-                             </Button>
-                         </Box>
-                     </ConditionalDisplay>
-                 )}
+                {canAddGames ? (
+                    <ConditionalDisplay condition={addGameVisible} padding={true}>
+                        <Autocomplete
+                            onChange={handleNewGameName}
+                            value={selectedGame}
+                            // isOptionEqualToValue={(option, value) => option.id === value.id}
+                            options={bggResults}
+                            renderInput={(params) => (
+                                <TextField id="outlined-basic"
+                                    label="Search BGG for a game to add"
+                                    variant="outlined"
+                                    value={bggSearch}
+                                    onChange={handleAddGameInputChange}
+                                    {...params}
+                                />
+                            )}
+                        />
+                        <Box sx={{ mt: 1, mb: 1 }}>
+                            <Button variant="outlined" onClick={handleCancel} startIcon={<Icon>cancel</Icon>}>Cancel</Button>
+                            <Button variant="contained"
+                                sx={{ ml: 1 }}
+                                onClick={handleAddGame}
+                                startIcon={addingGame ? <CircularProgress size={24} /> : <Icon>add</Icon>}
+                                disabled={addingGame}
+                            >
+                                Add game
+                            </Button>
+                        </Box>
+                    </ConditionalDisplay>
+                ) : null}
             </AccordionDetails>
-            <ConditionalDisplay name={SCREENS.MAIN} activeScreen={addGameVisible ? SCREENS.ADD_GAME : SCREENS.MAIN}>
+            <ConditionalDisplay condition={!addGameVisible}>
                 <AccordionActions>
-                    <Button variant="contained" color="secondary" onClick={props.handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button>
+                    {currentUser.isAdmin ? <Button variant="contained" color="secondary" onClick={props.handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button> : null}
                     {person.bggID ? <Button variant="outlined" onClick={handleGoToPersonProfile}><Icon>open_in_new</Icon> BGG Profile</Button> : null}
-                    {hasEnoughGames ? null : (<Button variant="contained" onClick={handleClick}><Icon>add</Icon> Add game</Button>)}
+                    {canAddGames ? <Button variant="contained" onClick={handleClick}><Icon>add</Icon> Add game</Button> : null}
                 </AccordionActions>
             </ConditionalDisplay>
         </Accordion>

@@ -44,8 +44,7 @@ function Queue(props) {
                 // bottom of the queue
                 if (position === -1) {
                     queueOrder.push(personID);
-                }
-                else if (isNumber(position)) {
+                } else if (isNumber(position)) {
                     queueOrder = [
                         ...queueOrder.slice(0, position),
                         personID,
@@ -70,20 +69,19 @@ function Queue(props) {
     function addPerson(newPerson) {
         (async () => {
             try {
-                const { id, ...person } = newPerson;
-
                 if (newPerson.id) {
                     await setDoc(
-                        doc(db, 'people', id),
-                        person
+                        doc(db, 'people', newPerson.id),
+                        newPerson,
                     );
-                    updateQueuePosition(id);
-                }
-                else {
+
+                    updateQueuePosition(newPerson.id);
+                } else {
                     const docRef = await addDoc(
                         collection(db, 'people'),
-                        person
+                        newPerson,
                     );
+
                     updateQueuePosition(docRef.id);
                 }
 
@@ -118,18 +116,24 @@ function Queue(props) {
 
     return (
         <>
-            <ConditionalDisplay name={SCREENS.MAIN} activeScreen={activeScreen} style={{ position: 'relative', paddingBottom: 96 }}>
+            <ConditionalDisplay condition={activeScreen === SCREENS.MAIN} style={{ position: 'relative', paddingBottom: 96 }}>
                 <PeopleAccordion queueOrder={config.queueOrder} updateQueuePosition={updateQueuePosition} />
-                <Fab color="primary" aria-label="add" onClick={handleShowNewPersonModal} style={{ position: 'absolute', right: 16, bottom: 16 }} variant="extended">
-                    <Icon>add</Icon>
-                    Add Person
-                </Fab>
-                <Fab color="secondary" aria-label="add" onClick={handleSignUp} style={{ position: 'absolute', right: 185, bottom: 16 }} variant="extended">
-                    <Icon>add</Icon>
-                    Sign Up
-                </Fab>
+                <Stack spacing={2} direction={'row'} justifyContent={'flex-end'} style={{ marginTop: 24, marginRight: 12 }}>
+                    {props.user.isAdmin ? (
+                        <Fab color="secondary" aria-label="add" onClick={handleShowNewPersonModal} variant="extended">
+                            <Icon>add</Icon>
+                            Add Person
+                        </Fab>
+                    ) : null}
+                    {config.queueOrder.includes(props.user.uid) ? null : (
+                        <Fab color="primary" aria-label="add" onClick={handleSignUp} variant="extended">
+                            <Icon>add</Icon>
+                            Get in the Queue
+                        </Fab>
+                    )}
+                </Stack>
             </ConditionalDisplay>
-            <ConditionalDisplay name={SCREENS.ADD_PERSON} activeScreen={activeScreen} style={{ padding: 24 }}>
+            <ConditionalDisplay condition={activeScreen === SCREENS.ADD_PERSON} style={{ padding: 24 }}>
                 <Stack direction="column" spacing={2}>
                     <TextField label="Name" variant="outlined" value={newPersonName} onChange={(e) => setNewPersonName(e.target.value)} />
                     <TextField label="BGG Username" variant="outlined" value={newPersonBGGID} onChange={(e) => setNewPersonBGGID(e.target.value)} />
