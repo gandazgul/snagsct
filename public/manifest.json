@@ -13,7 +13,7 @@
       "sizes": "144x144"
     }
   ],
-  "start_url": "/queue/app.html",
+  "start_url": "/queue/",
   "display": "standalone",
   "theme_color": "#90a959",
   "background_color": "#f2e5e8"
