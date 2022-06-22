@@ -30,14 +30,13 @@ function ResponsiveAppBar(props) {
                     <Typography
                         variant="h5"
                         noWrap
-                        component="a"
-                        href=""
+                        component="p"
                         sx={{
                             ml: 2,
                             flexGrow: 1,
                             fontFamily: 'monospace',
                             fontWeight: 700,
-                            letterSpacing: '.2rem',
+                            letterSpacing: '.1rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}

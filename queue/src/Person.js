@@ -17,7 +17,7 @@ function Person(props) {
     const [addingGame, setAddingGame] = React.useState(false);
     const [selectedGame, setSelectedGame] = React.useState(null);
     const [games, setGames] = React.useState(person.games);
-    const canAddGames = games.length < 2 && currentUser.uid === person.id || currentUser.isAdmin;
+    const canAddGames = games.length < 2 && (currentUser.uid === person.id || currentUser.isAdmin);
 
     function handleClick() {
         setAddGameVisible(true);
