@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import { Card, CardHeader, CardContent, CardActions, Button, IconButton, CardMedia, Typography, Box, Icon } from '@mui/material';
+import { Card, CardHeader, CardContent, CardActions, Button, IconButton, CardMedia, Typography, Box, Icon, Badge } from '@mui/material';
 import UserContext from './UserContext';
-import ConditionalDisplay from './ConditionalDisplay';
 
 function GameCard(props) {
-    const { game, person, handleMarkGameAsPlayed, handleDeleteGame } = props;
-    const { id, name, thumbnail, description, gameInfo } = game;
+    const { game, person, handleMarkGameAsPlayed, handleDeleteGame, handleAddVote } = props;
+    const { id, name, thumbnail, description, gameInfo, votes } = game;
     const currentUser = useContext(UserContext);
-    const userOwnsGameOrIsAdmin = currentUser.uid === person.id || currentUser.isAdmin;
+    const ownsGame = currentUser.uid === person.id;
+    const userOwnsGameOrIsAdmin = ownsGame || currentUser.isAdmin;
 
     const {
         minPlayers,
@@ -43,12 +43,19 @@ function GameCard(props) {
                     <Typography component="p" variant="gameDescription" dangerouslySetInnerHTML={{ __html: description || '' }} />
                 </Box>
             </CardContent>
-            <ConditionalDisplay condition={userOwnsGameOrIsAdmin}>
-                <CardActions>
-                    <Button size="small" onClick={handleMarkGameAsPlayed(id)}>Mark as Played</Button>
-                    <Button size="small" onClick={handleDeleteGame(id)}>Delete</Button>
-                </CardActions>
-            </ConditionalDisplay>
+            <CardActions>
+                <IconButton disabled={ownsGame} aria-label="Thumbs up" size="small" onClick={handleAddVote(id)} title={(game.votes || []).join('\n')}>
+                    <Badge badgeContent={game.votes?.length || null} color="primary">
+                        <Icon>thumb_up</Icon>
+                    </Badge>
+                </IconButton>
+                {userOwnsGameOrIsAdmin && (
+                    <IconButton aria-label="Mark as played" size="small" onClick={handleMarkGameAsPlayed(id)}><Icon>playlist_add_check</Icon></IconButton>
+                )}
+                {userOwnsGameOrIsAdmin && (
+                    <IconButton aria-label="Delete" color="error" size="small" onClick={handleDeleteGame(id)}><Icon>delete_forever</Icon></IconButton>
+                )}
+            </CardActions>
         </Card>
     );
 }

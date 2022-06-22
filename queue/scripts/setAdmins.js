@@ -11,12 +11,15 @@ const auth = getAuth(app);
 
 const admins = [
     'kMQBKq79FthB5RAQpBkp0vlv8Fq1', // Carlos
+    'Btm5RLqrokcum6My25CXUpDGXu83', // Katie
+    'AT6P33IpjxTcylIrVJa2TbDpB2w1', // Alejandro
+    'UTvND60z5tMS8x4XS9iMAXfJk2y2', // Jeff
 ];
 const promises = [];
 
 for (const uid of admins) {
     promises.push(
-        auth.setCustomUserClaims('kMQBKq79FthB5RAQpBkp0vlv8Fq1', { admin: true }),
+        auth.setCustomUserClaims(uid, { admin: true }),
     );
 }
 

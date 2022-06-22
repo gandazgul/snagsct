@@ -17,7 +17,7 @@ function Person(props) {
     const [addingGame, setAddingGame] = React.useState(false);
     const [selectedGame, setSelectedGame] = React.useState(null);
     const [games, setGames] = React.useState(person.games);
-    const canAddGames = games.length < 2 && currentUser.uid === person.id;
+    const canAddGames = games.length < 2 && currentUser.uid === person.id || currentUser.isAdmin;
 
     function handleClick() {
         setAddGameVisible(true);
@@ -167,6 +167,20 @@ function Person(props) {
         };
     }
 
+    function handleAddVote(gameID) {
+        return () => {
+            (async () => {
+                const newGames = [...games];
+                const gameIndex = newGames.findIndex((g) => g.id === gameID);
+                newGames[gameIndex].votes = newGames[gameIndex].votes || [];
+                newGames[gameIndex].votes.push(currentUser.displayName);
+                newGames[gameIndex].votes = _.uniq(newGames[gameIndex].votes);
+
+                await updatePerson(newGames);
+            })();
+        };
+    }
+
     return (
         <Accordion expanded={props.expanded === person.id} onChange={handleAccordionChange(person.id)} disableGutters square elevation={2}>
             <AccordionSummary
@@ -179,7 +193,13 @@ function Person(props) {
             <AccordionDetails>
                 <Stack direction="column" spacing={2}>
                     {games.map((game) => (
-                        <GameCard game={game} person={person} handleDeleteGame={handleDeleteGame} handleMarkGameAsPlayed={handleMarkGameAsPlayed} key={game.id} />
+                        <GameCard key={game.id}
+                            game={game}
+                            person={person}
+                            handleDeleteGame={handleDeleteGame}
+                            handleMarkGameAsPlayed={handleMarkGameAsPlayed}
+                            handleAddVote={handleAddVote}
+                        />
                     ))}
                 </Stack>
                 {canAddGames ? (
@@ -215,7 +235,7 @@ function Person(props) {
             </AccordionDetails>
             <ConditionalDisplay condition={!addGameVisible}>
                 <AccordionActions>
-                    {currentUser.isAdmin ? <Button variant="contained" color="secondary" onClick={props.handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button> : null}
+                    {currentUser.isAdmin ? <Button variant="contained" color="error" onClick={props.handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button> : null}
                     {person.bggID ? <Button variant="outlined" onClick={handleGoToPersonProfile}><Icon>open_in_new</Icon> BGG Profile</Button> : null}
                     {canAddGames ? <Button variant="contained" onClick={handleClick}><Icon>add</Icon> Add game</Button> : null}
                 </AccordionActions>
