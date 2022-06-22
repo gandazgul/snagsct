@@ -173,7 +173,12 @@ function Person(props) {
                 const newGames = [...games];
                 const gameIndex = newGames.findIndex((g) => g.id === gameID);
                 newGames[gameIndex].votes = newGames[gameIndex].votes || [];
-                newGames[gameIndex].votes.push(currentUser.displayName);
+                if (newGames[gameIndex].votes.includes(currentUser.displayName)) {
+                    newGames[gameIndex].votes = newGames[gameIndex].votes.filter((name) => name !== currentUser.displayName);
+                }
+                else {
+                    newGames[gameIndex].votes.push(currentUser.displayName);
+                }
                 newGames[gameIndex].votes = _.uniq(newGames[gameIndex].votes);
 
                 await updatePerson(newGames);
