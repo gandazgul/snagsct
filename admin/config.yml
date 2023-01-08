@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: gandazgul/snagsct.tk
+  repo: gandazgul/snagsct
   branch: main
   site_domain: queue.ravelo.tk
 
