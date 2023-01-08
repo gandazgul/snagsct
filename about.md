@@ -5,6 +5,6 @@ permalink: /about/
 ---
 SNAGs stands for Stamford-Norwalk Area Gamers. We are a group of board game enthusiasts that meet regularly to play and hangout.
 
-Find us on our website: https://queue.ravelo.tk/[](https://queue.ravelo.tk/).
+Find us on our website: <https://queue.ravelo.tk/>[](https://queue.ravelo.tk/).
 
 Also on Meetup: <https://www.meetup.com/stamford-board-games-group>
