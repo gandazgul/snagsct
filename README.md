@@ -7,7 +7,7 @@ This is the source code and content for the SNAGs website.
 SNAGs stands for Stamford Norwalk Area Gamers. We are a group of board game enthusiasts that meet regularly to play and 
 hangout. 
 
-Find us on our website: https://www.snagsct.tk/.
+Find us on our website: https://queue.ravelo.tk/.
 
 Also, on Facebook: https://www.facebook.com/groups/SNAGsCT and our sister group on Meetup: https://www.meetup.com/stamford-board-games-group
 
