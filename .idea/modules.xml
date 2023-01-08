@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/snagsct.tk.iml" filepath="$PROJECT_DIR$/.idea/snagsct.tk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/snagsct.iml" filepath="$PROJECT_DIR$/.idea/snagsct.iml" />
     </modules>
   </component>
 </project>
