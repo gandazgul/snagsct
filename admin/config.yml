@@ -2,7 +2,7 @@ backend:
   name: github
   repo: gandazgul/snagsct.tk
   branch: main
-  site_domain: www.snagsct.tk
+  site_domain: queue.ravelo.tk
 
 media_folder: public/img
 
