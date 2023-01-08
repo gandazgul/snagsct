@@ -162,7 +162,6 @@ function Person(props) {
     function handleMarkGameAsPlayed(gameID) {
         return () => {
             handleDeleteGame(gameID)();
-            // -1 === bottom of the queue
             updateQueuePosition(person.id);
         };
     }
