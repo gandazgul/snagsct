@@ -19,10 +19,10 @@ import './App.css';
 const theme = createTheme({
     typography: {
         gameTitle: {
-            fontSize: '1rem',
+            fontSize: '1.1rem',
         },
         gameDescription: {
-            fontSize: '0.8rem',
+            fontSize: '0.9rem',
         },
     },
     palette: {
@@ -120,7 +120,7 @@ function App() {
                                 <li><strong>How do you use the information?</strong></li>
                             </ul>
                             <ul>
-                                <li><strong>Name:</strong> We use your name to display you in the queue, and when you vote for other people's games.</li>
+                                <li><strong>Name:</strong> we only use your name to display you in the queue.</li>
                                 <li><strong>Email:</strong> is used differentiate you from other users. We won't email you.</li>
                                 <li><strong>Photo URL:</strong> is used for displaying in the top right corner, but we dont store it.</li>
                             </ul>
