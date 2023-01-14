@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { Card, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography, Box, Icon, Badge } from '@mui/material';
+import { Card, CardHeader, CardContent, CardActions, IconButton, CardMedia, Typography, Box, Icon } from '@mui/material';
 import UserContext from './UserContext';
 
 function GameCard(props) {
-    const { game, person, handleMarkGameAsPlayed, handleDeleteGame, handleAddVote } = props;
-    const { id, name, thumbnail, description, gameInfo, votes = [] } = game;
+    const { game, person, handleMarkGameAsPlayed, handleDeleteGame } = props;
+    const { id, name, thumbnail, description, gameInfo } = game;
     const currentUser = useContext(UserContext);
     const ownsGame = currentUser.uid === person.id;
     const userOwnsGameOrIsAdmin = ownsGame || currentUser.isAdmin;
@@ -44,11 +44,6 @@ function GameCard(props) {
                 </Box>
             </CardContent>
             <CardActions>
-                <IconButton disabled={ownsGame} aria-label="Thumbs up" size="small" onClick={handleAddVote(id)} title={votes.join('\n')}>
-                    <Badge badgeContent={votes.length} color="primary">
-                        <Icon>thumb_up</Icon>
-                    </Badge>
-                </IconButton>
                 {userOwnsGameOrIsAdmin && (
                     <IconButton title="Mark as played" size="small" onClick={handleMarkGameAsPlayed(id)}><Icon>playlist_add_check</Icon></IconButton>
                 )}

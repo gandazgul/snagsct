@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Icon, Autocomplete, Stack, Box, Button, TextField, CircularProgress, Typography } from '@mui/material';
 import _ from 'lodash';
 import { xml2js } from 'xml-js';
@@ -8,15 +8,15 @@ import GameCard from './GameCard';
 import UserContext from './UserContext';
 
 function Person(props) {
-    const { person, onPersonUpdated, updateQueuePosition, handleAccordionChange } = props;
+    const { person, onPersonUpdated, updateQueuePosition, handleAccordionChange, handleDeletePerson } = props;
     const currentUser = useContext(UserContext);
 
-    const [addGameVisible, setAddGameVisible] = React.useState(false);
-    const [bggResults, setBGGResults] = React.useState([]);
-    const [bggSearch, setBGGSearch] = React.useState('');
-    const [addingGame, setAddingGame] = React.useState(false);
-    const [selectedGame, setSelectedGame] = React.useState(null);
-    const [games, setGames] = React.useState(person.games);
+    const [addGameVisible, setAddGameVisible] = useState(false);
+    const [bggResults, setBGGResults] = useState([]);
+    const [bggSearch, setBGGSearch] = useState('');
+    const [addingGame, setAddingGame] = useState(false);
+    const [selectedGame, setSelectedGame] = useState(null);
+    const [games, setGames] = useState(person.games);
     const canAddGames = games.length < 2 && (currentUser.uid === person.id || currentUser.isAdmin);
 
     function handleClick() {
@@ -77,7 +77,6 @@ function Person(props) {
         if (!polls.length) { return null; }
 
         let best = {
-            numVotes: 0,
             playerCount: 0,
         };
 
@@ -153,36 +152,20 @@ function Person(props) {
 
     function handleDeleteGame(gameID) {
         return () => {
-            (async () => {
-                await updatePerson(person.games.filter((g) => g.id !== gameID));
-            })();
+            if (window.confirm('Are you sure you want to delete this game?')) {
+                (async () => {
+                    await updatePerson(person.games.filter((g) => g.id !== gameID));
+                })();
+            }
         };
     }
 
     function handleMarkGameAsPlayed(gameID) {
         return () => {
-            handleDeleteGame(gameID)();
-            // -1 === bottom of the queue
-            updateQueuePosition(person.id);
-        };
-    }
-
-    function handleAddVote(gameID) {
-        return () => {
-            (async () => {
-                const newGames = [...games];
-                const gameIndex = newGames.findIndex((g) => g.id === gameID);
-                newGames[gameIndex].votes = newGames[gameIndex].votes || [];
-                if (newGames[gameIndex].votes.includes(currentUser.displayName)) {
-                    newGames[gameIndex].votes = newGames[gameIndex].votes.filter((name) => name !== currentUser.displayName);
-                }
-                else {
-                    newGames[gameIndex].votes.push(currentUser.displayName);
-                }
-                newGames[gameIndex].votes = _.uniq(newGames[gameIndex].votes);
-
-                await updatePerson(newGames);
-            })();
+            if (window.confirm('Are you sure you want to mark as played? you will be moved to the end of the queue and this game removed.')) {
+                handleDeleteGame(gameID)();
+                updateQueuePosition(person.id);
+            }
         };
     }
 
@@ -203,44 +186,43 @@ function Person(props) {
                             person={person}
                             handleDeleteGame={handleDeleteGame}
                             handleMarkGameAsPlayed={handleMarkGameAsPlayed}
-                            handleAddVote={handleAddVote}
                         />
                     ))}
+                    {canAddGames ? (
+                        <ConditionalDisplay condition={addGameVisible} padding={true}>
+                            <Autocomplete
+                                onChange={handleNewGameName}
+                                value={selectedGame}
+                                // isOptionEqualToValue={(option, value) => option.id === value.id}
+                                options={bggResults}
+                                renderInput={(params) => (
+                                    <TextField id="outlined-basic"
+                                        label="Search BGG for a game to add"
+                                        variant="outlined"
+                                        value={bggSearch}
+                                        onChange={handleAddGameInputChange}
+                                        {...params}
+                                    />
+                                )}
+                            />
+                            <Box sx={{ mt: 1, mb: 1 }}>
+                                <Button variant="outlined" onClick={handleCancel} startIcon={<Icon>cancel</Icon>}>Cancel</Button>
+                                <Button variant="contained"
+                                    sx={{ ml: 1 }}
+                                    onClick={handleAddGame}
+                                    startIcon={addingGame ? <CircularProgress size={24} /> : <Icon>add</Icon>}
+                                    disabled={addingGame}
+                                >
+                                    Add game
+                                </Button>
+                            </Box>
+                        </ConditionalDisplay>
+                    ) : null}
                 </Stack>
-                {canAddGames ? (
-                    <ConditionalDisplay condition={addGameVisible} padding={true}>
-                        <Autocomplete
-                            onChange={handleNewGameName}
-                            value={selectedGame}
-                            // isOptionEqualToValue={(option, value) => option.id === value.id}
-                            options={bggResults}
-                            renderInput={(params) => (
-                                <TextField id="outlined-basic"
-                                    label="Search BGG for a game to add"
-                                    variant="outlined"
-                                    value={bggSearch}
-                                    onChange={handleAddGameInputChange}
-                                    {...params}
-                                />
-                            )}
-                        />
-                        <Box sx={{ mt: 1, mb: 1 }}>
-                            <Button variant="outlined" onClick={handleCancel} startIcon={<Icon>cancel</Icon>}>Cancel</Button>
-                            <Button variant="contained"
-                                sx={{ ml: 1 }}
-                                onClick={handleAddGame}
-                                startIcon={addingGame ? <CircularProgress size={24} /> : <Icon>add</Icon>}
-                                disabled={addingGame}
-                            >
-                                Add game
-                            </Button>
-                        </Box>
-                    </ConditionalDisplay>
-                ) : null}
             </AccordionDetails>
             <ConditionalDisplay condition={!addGameVisible}>
                 <AccordionActions>
-                    {currentUser.isAdmin ? <Button variant="contained" color="error" onClick={props.handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button> : null}
+                    {currentUser.isAdmin ? <Button variant="contained" color="error" onClick={handleDeletePerson}><Icon>delete_forever</Icon> Delete Person</Button> : null}
                     {person.bggID ? <Button variant="outlined" onClick={handleGoToPersonProfile}><Icon>open_in_new</Icon> BGG Profile</Button> : null}
                     {canAddGames ? <Button variant="contained" onClick={handleClick}><Icon>add</Icon> Add game</Button> : null}
                 </AccordionActions>

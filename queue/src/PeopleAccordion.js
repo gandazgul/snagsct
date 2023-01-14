@@ -50,20 +50,22 @@ function PeopleAccordion(props) {
 
     function handleDeletePerson(personID) {
         return () => {
-            const { [personID]: deleted, ...newPeople } = people;
+            if (window.confirm('Are you sure?')) {
+                const { [personID]: deleted, ...newPeople } = people;
 
-            setPeople(newPeople);
-            // delete from queue order
-            props.updateQueuePosition(personID, null);
+                setPeople(newPeople);
+                // delete from queue order
+                props.updateQueuePosition(personID, null);
 
-            (async () => {
-                try {
-                    await deleteDoc(deleted.docRef);
-                }
-                catch (e) {
-                    console.error('Error updating config: ', e);
-                }
-            })();
+                (async () => {
+                    try {
+                        await deleteDoc(deleted.docRef);
+                    }
+                    catch (e) {
+                        console.error('Error updating config: ', e);
+                    }
+                })();
+            }
         };
     }
 

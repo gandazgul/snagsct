@@ -1,17 +1,7 @@
-import React from 'react';
-import { Box } from '@mui/material';
-
 function ConditionalDisplay(props) {
-    const { children, condition, padding, ...other } = props;
+    const { children, condition } = props;
 
-    return condition ? (
-        <Box role="container"
-            style={padding ? { padding: 24 } : {}}
-            {...other}
-        >
-            {children}
-        </Box>
-    ) : null;
+    return condition ? children : null;
 }
 
 export default ConditionalDisplay;

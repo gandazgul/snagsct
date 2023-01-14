@@ -5,11 +5,13 @@ import {
     createTheme,
     ThemeProvider,
     CssBaseline,
-    Box,
+    Paper,
+    Container, Typography,
 } from '@mui/material';
 import UserContext from './UserContext';
 import ResponsiveAppBar from './AppBar';
 import Queue from './Queue';
+import ConditionalDisplay from './ConditionalDisplay';
 
 import './App.css';
 
@@ -17,10 +19,10 @@ import './App.css';
 const theme = createTheme({
     typography: {
         gameTitle: {
-            fontSize: '1rem',
+            fontSize: '1.1rem',
         },
         gameDescription: {
-            fontSize: '0.8rem',
+            fontSize: '0.9rem',
         },
     },
     palette: {
@@ -98,15 +100,33 @@ function App() {
             <UserContext.Provider value={currentUser}>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
-                <ResponsiveAppBar user={currentUser} handleSignOut={handleSignOut} />
-                {
-                    currentUser ?
-                    <Queue user={currentUser} /> : (
-                        <Box style={{ padding: '1rem' }}>
+                <Container maxWidth="xl">
+                    <ResponsiveAppBar user={currentUser} handleSignOut={handleSignOut} />
+                    <ConditionalDisplay condition={currentUser}>
+                        <Queue user={currentUser} />
+                    </ConditionalDisplay>
+                    <ConditionalDisplay condition={!currentUser}>
+                        <Paper style={{ padding: 24, borderRadius: 0 }}>
+                            <Typography variant="h5">Please sign in to see and participate in the queue.</Typography>
                             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-                        </Box>
-                    )
-                }
+                            <Typography variant="h6" style={{ marginTop: 24 }}>Privacy</Typography>
+                            <Typography variant="body1">
+                                The reason for authentication is to enable administrators to manage the queue and for you to manage your own queued games.
+                                We don't get your Google credentials or any information about your account other than what's listed below.
+                            </Typography>
+                            <ul style={{ listStyle: 'none', padding: 0 }}>
+                                <li><strong>What do we get?</strong> Your name, email, and photo URL.</li>
+                                <li><strong>What do we store?</strong> Your name.</li>
+                                <li><strong>How do you use the information?</strong></li>
+                            </ul>
+                            <ul>
+                                <li><strong>Name:</strong> we only use your name to display you in the queue.</li>
+                                <li><strong>Email:</strong> is used differentiate you from other users. We won't email you.</li>
+                                <li><strong>Photo URL:</strong> is used for displaying in the top right corner, but we dont store it.</li>
+                            </ul>
+                        </Paper>
+                    </ConditionalDisplay>
+                </Container>
             </UserContext.Provider>
         </ThemeProvider>
     );
