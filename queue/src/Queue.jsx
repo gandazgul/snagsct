@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { isNumber } from 'lodash';
-import { getDocs, collection, doc, addDoc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { collection, doc, addDoc, setDoc } from 'firebase/firestore';
 import { Fab, Icon, TextField, Button, Stack, Paper, Box } from '@mui/material';
 import ConditionalDisplay from './ConditionalDisplay';
 import PeopleAccordion from './PeopleAccordion';
@@ -9,62 +8,15 @@ import { SCREENS } from './constants';
 
 function Queue(props) {
     const [activeScreen, setActiveScreen] = useState(0);
-    const [config, setConfig] = useState(null);
     const [newPersonName, setNewPersonName] = useState('');
     const [newPersonBGGID, setNewPersonBGGID] = useState('');
     const [newPersonID, setNewPersonID] = useState(null);
 
-    useEffect(() => {
-        if (!config) {
-            getDocs(collection(db, 'config'))
-                .then((querySnapshot) => {
-                    const appConfig = querySnapshot.docs[0];
-
-                    console.log(appConfig);
-
-                    setConfig({
-                        ...appConfig.data(),
-                        id: appConfig.id,
-                        docRef: appConfig.ref,
-                    });
-                });
-        }
-    }, [config]);
-
-    if (!config) { return null; }
+    const { updateQueuePosition, queueOrder, user } = props;
 
     function handleShowNewPersonModal() { setActiveScreen(SCREENS.ADD_PERSON); }
 
     function handleCancelNewPersonModal() { setActiveScreen(SCREENS.MAIN); }
-
-    function updateQueuePosition(personID, position = -1) {
-        (async () => {
-            try {
-                let queueOrder = config.queueOrder.filter((id) => id !== personID);
-                // bottom of the queue
-                if (position === -1) {
-                    queueOrder.push(personID);
-                } else if (isNumber(position)) {
-                    queueOrder = [
-                        ...queueOrder.slice(0, position),
-                        personID,
-                        ...queueOrder.slice(position),
-                    ];
-                }
-
-                await setDoc(config.docRef, { queueOrder }, { merge: true });
-                setConfig({
-                    ...config,
-                    queueOrder,
-                });
-
-                console.log('Config written');
-            }
-            catch (e) {
-                console.error('Error updating config: ', e);
-            }
-        })();
-    }
 
     function addPerson(newPerson) {
         (async () => {
@@ -109,8 +61,8 @@ function Queue(props) {
     }
 
     function handleSignUp() {
-        setNewPersonName(props.user.displayName);
-        setNewPersonID(props.user.uid);
+        setNewPersonName(user.displayName);
+        setNewPersonID(user.uid);
         handleShowNewPersonModal();
     }
 
@@ -118,15 +70,15 @@ function Queue(props) {
         <>
             <ConditionalDisplay condition={activeScreen === SCREENS.MAIN}>
                 <Box style={{ position: 'relative', paddingBottom: 50 }}>
-                    <PeopleAccordion queueOrder={config.queueOrder} updateQueuePosition={updateQueuePosition} />
+                    <PeopleAccordion queueOrder={queueOrder} updateQueuePosition={updateQueuePosition} />
                     <Stack spacing={2} direction={'row'} justifyContent={'flex-end'} style={{ marginTop: 24, marginRight: 12 }}>
-                        <ConditionalDisplay condition={props.user.isAdmin}>
+                        <ConditionalDisplay condition={user.isAdmin}>
                             <Fab color="secondary" aria-label="add" onClick={handleShowNewPersonModal} variant="extended">
                                 <Icon>add</Icon>
                                 Add Person
                             </Fab>
                         </ConditionalDisplay>
-                        <ConditionalDisplay condition={!config.queueOrder.includes(props.user.uid)}>
+                        <ConditionalDisplay condition={!queueOrder.includes(user.uid)}>
                             <Fab color="primary" aria-label="add" onClick={handleSignUp} variant="extended">
                                 <Icon>add</Icon>
                                 Get in the Queue

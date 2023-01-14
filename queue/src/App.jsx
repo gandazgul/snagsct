@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { firebase } from './firebase';
+import { db, firebase } from './firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import {
     createTheme,
@@ -8,9 +8,12 @@ import {
     Paper,
     Container, Typography,
 } from '@mui/material';
+import { collection, getDocs, setDoc } from 'firebase/firestore';
+import { isNumber } from 'lodash';
 import UserContext from './UserContext';
 import ResponsiveAppBar from './AppBar';
 import Queue from './Queue';
+import GameLog from './GameLog';
 import ConditionalDisplay from './ConditionalDisplay';
 
 import './App.css';
@@ -29,6 +32,7 @@ const theme = createTheme({
         // mode: 'dark',
         primary: {
             main: '#90a959',
+            light: '#eee',
         },
         secondary: {
             main: '#7259a9',
@@ -41,9 +45,27 @@ const theme = createTheme({
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null); // Local signed-in state.
+    const [config, setConfig] = useState(null);
+
+    useEffect(() => {
+        if (!config) {
+            getDocs(collection(db, 'config'))
+                .then((querySnapshot) => {
+                    const appConfig = querySnapshot.docs[0];
+
+                    console.log(appConfig);
+
+                    setConfig({
+                        ...appConfig.data(),
+                        id: appConfig.id,
+                        docRef: appConfig.ref,
+                    });
+                });
+        }
+    }, [config]);
 
     // Configure FirebaseUI.
-    const uiConfig = {
+    const firebaseAuthUIConfig = {
         // Popup signin flow rather than redirect flow.
         signInFlow: 'popup',
         // We will display Google and Facebook as auth providers.
@@ -95,6 +117,37 @@ function App() {
         firebase.auth().signOut();
     }
 
+    function updateQueuePosition(personID, position = -1) {
+        (async () => {
+            try {
+                let queueOrder = config.queueOrder.filter((id) => id !== personID);
+                // bottom of the queue
+                if (position === -1) {
+                    queueOrder.push(personID);
+                } else if (isNumber(position)) {
+                    queueOrder = [
+                        ...queueOrder.slice(0, position),
+                        personID,
+                        ...queueOrder.slice(position),
+                    ];
+                }
+
+                await setDoc(config.docRef, { queueOrder }, { merge: true });
+                setConfig({
+                    ...config,
+                    queueOrder,
+                });
+
+                console.log('Config written');
+            }
+            catch (e) {
+                console.error('Error updating config: ', e);
+            }
+        })();
+    }
+
+    if (!config) { return null; }
+
     return (
         <ThemeProvider theme={theme}>
             <UserContext.Provider value={currentUser}>
@@ -103,12 +156,15 @@ function App() {
                 <Container maxWidth="xl">
                     <ResponsiveAppBar user={currentUser} handleSignOut={handleSignOut} />
                     <ConditionalDisplay condition={currentUser}>
-                        <Queue user={currentUser} />
+                        <Queue queueOrder={config.queueOrder} user={currentUser} updateQueuePosition={updateQueuePosition} />
+                    </ConditionalDisplay>
+                    <ConditionalDisplay condition={currentUser}>
+                        <GameLog gameLog={config.gameLog} />
                     </ConditionalDisplay>
                     <ConditionalDisplay condition={!currentUser}>
                         <Paper style={{ padding: 24, borderRadius: 0 }}>
                             <Typography variant="h5">Please sign in to see and participate in the queue.</Typography>
-                            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+                            <StyledFirebaseAuth uiConfig={firebaseAuthUIConfig} firebaseAuth={firebase.auth()} />
                             <Typography variant="h6" style={{ marginTop: 24 }}>Privacy</Typography>
                             <Typography variant="body1">
                                 The reason for authentication is to enable administrators to manage the queue and for you to manage your own queued games.
