@@ -47,23 +47,6 @@ function App() {
     const [currentUser, setCurrentUser] = useState(null); // Local signed-in state.
     const [config, setConfig] = useState(null);
 
-    useEffect(() => {
-        if (!config) {
-            getDocs(collection(db, 'config'))
-                .then((querySnapshot) => {
-                    const appConfig = querySnapshot.docs[0];
-
-                    console.log(appConfig);
-
-                    setConfig({
-                        ...appConfig.data(),
-                        id: appConfig.id,
-                        docRef: appConfig.ref,
-                    });
-                });
-        }
-    }, [config]);
-
     // Configure FirebaseUI.
     const firebaseAuthUIConfig = {
         // Popup signin flow rather than redirect flow.
@@ -117,6 +100,23 @@ function App() {
         firebase.auth().signOut();
     }
 
+    useEffect(() => {
+        if (currentUser && !config) {
+            getDocs(collection(db, 'config'))
+                .then((querySnapshot) => {
+                    const appConfig = querySnapshot.docs[0];
+
+                    console.log(appConfig);
+
+                    setConfig({
+                        ...appConfig.data(),
+                        id: appConfig.id,
+                        docRef: appConfig.ref,
+                    });
+                });
+        }
+    }, [config, currentUser]);
+
     function updateQueuePosition(personID, position = -1) {
         (async () => {
             try {
@@ -167,9 +167,10 @@ function App() {
                             {
                                 ...gameLog,
                                 playedAt: new Date(),
-                            }
-                        ]
-                    }, { merge: true });
+                            },
+                        ],
+                    }, { merge: true },
+                );
 
                 console.log('Game added to the log.');
 
@@ -183,13 +184,13 @@ function App() {
                     },
                 });
             }
-            catch(e) {
+            catch (e) {
                 console.error('Error updating config: ', e);
             }
         })();
     }
 
-    if (!config) { return null; }
+    const loadingComplete = currentUser && config;
 
     return (
         <ThemeProvider theme={theme}>
@@ -198,13 +199,13 @@ function App() {
                 <CssBaseline />
                 <Container maxWidth="xl">
                     <ResponsiveAppBar user={currentUser} handleSignOut={handleSignOut} />
-                    <ConditionalDisplay condition={currentUser}>
-                        <Queue queueOrder={config.queueOrder} user={currentUser} updateQueuePosition={updateQueuePosition} addGameToLog={addGameToLog} />
-                    </ConditionalDisplay>
-                    <ConditionalDisplay condition={currentUser}>
-                        <GameLog gameLog={config.gameLog} />
-                    </ConditionalDisplay>
-                    <ConditionalDisplay condition={!currentUser}>
+                    {loadingComplete ? (
+                        <>
+                            <Queue queueOrder={config.queueOrder} user={currentUser} updateQueuePosition={updateQueuePosition} addGameToLog={addGameToLog} />
+                            <GameLog gameLog={config.gameLog} />
+                        </>
+                    ) : null}
+                    {!currentUser ? (
                         <Paper style={{ padding: 24, borderRadius: 0 }}>
                             <Typography variant="h5">Please sign in to see and participate in the queue.</Typography>
                             <StyledFirebaseAuth uiConfig={firebaseAuthUIConfig} firebaseAuth={firebase.auth()} />
@@ -224,7 +225,7 @@ function App() {
                                 <li><strong>Photo URL:</strong> is used for displaying in the top right corner, but we dont store it.</li>
                             </ul>
                         </Paper>
-                    </ConditionalDisplay>
+                    ) : null}
                 </Container>
             </UserContext.Provider>
         </ThemeProvider>
