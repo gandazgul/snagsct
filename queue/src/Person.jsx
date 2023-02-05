@@ -8,7 +8,7 @@ import GameCard from './GameCard';
 import UserContext from './UserContext';
 
 function Person(props) {
-    const { person, onPersonUpdated, updateQueuePosition, handleAccordionChange, handleDeletePerson } = props;
+    const { person, onPersonUpdated, updateQueuePosition, handleAccordionChange, handleDeletePerson, addGameToLog } = props;
     const currentUser = useContext(UserContext);
 
     const [addGameVisible, setAddGameVisible] = useState(false);
@@ -151,8 +151,13 @@ function Person(props) {
     }
 
     function handleDeleteGame(gameID) {
-        return () => {
-            if (window.confirm('Are you sure you want to delete this game?')) {
+        return (confirm = true) => {
+            let shouldUpdate = true;
+            if (confirm) {
+                shouldUpdate = window.confirm('Are you sure you want to delete this game?');
+            }
+
+            if (shouldUpdate) {
                 (async () => {
                     await updatePerson(person.games.filter((g) => g.id !== gameID));
                 })();
@@ -163,8 +168,9 @@ function Person(props) {
     function handleMarkGameAsPlayed(gameID) {
         return () => {
             if (window.confirm('Are you sure you want to mark as played? you will be moved to the end of the queue and this game removed.')) {
-                handleDeleteGame(gameID)();
+                addGameToLog(person.games.find((g) => g.id === gameID));
                 updateQueuePosition(person.id);
+                handleDeleteGame(gameID)(false);
             }
         };
     }

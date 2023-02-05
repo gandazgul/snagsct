@@ -146,6 +146,49 @@ function App() {
         })();
     }
 
+    function addGameToLog(game) {
+        const gameLog = {
+            name: game.name,
+            thumbnail: game.thumbnail,
+            playedBy: currentUser.displayName,
+            playedAt: {
+                seconds: (new Date()).getTime(),
+                nanoseconds: 0,
+            },
+        };
+
+        (async () => {
+            try {
+                await setDoc(
+                    config.docRef,
+                    {
+                        gameLog: [
+                            ...config.gameLog,
+                            {
+                                ...gameLog,
+                                playedAt: new Date(),
+                            }
+                        ]
+                    }, { merge: true });
+
+                console.log('Game added to the log.');
+
+                config.gameLog.push({
+                    name: game.name,
+                    thumbnail: game.thumbnail,
+                    playedBy: currentUser.displayName,
+                    playedAt: {
+                        seconds: (new Date()).getTime(),
+                        nanoseconds: 0,
+                    },
+                });
+            }
+            catch(e) {
+                console.error('Error updating config: ', e);
+            }
+        })();
+    }
+
     if (!config) { return null; }
 
     return (
@@ -156,7 +199,7 @@ function App() {
                 <Container maxWidth="xl">
                     <ResponsiveAppBar user={currentUser} handleSignOut={handleSignOut} />
                     <ConditionalDisplay condition={currentUser}>
-                        <Queue queueOrder={config.queueOrder} user={currentUser} updateQueuePosition={updateQueuePosition} />
+                        <Queue queueOrder={config.queueOrder} user={currentUser} updateQueuePosition={updateQueuePosition} addGameToLog={addGameToLog} />
                     </ConditionalDisplay>
                     <ConditionalDisplay condition={currentUser}>
                         <GameLog gameLog={config.gameLog} />

@@ -4,7 +4,7 @@ import Person from './Person';
 import { db } from './firebase';
 
 function PeopleAccordion(props) {
-    const { queueOrder, updateQueuePosition } = props;
+    const { queueOrder, updateQueuePosition, addGameToLog } = props;
 
     const [expanded, setExpanded] = React.useState(queueOrder[0]);
     const [people, setPeople] = React.useState(null);
@@ -79,6 +79,7 @@ function PeopleAccordion(props) {
                 handleDeletePerson={handleDeletePerson(personID)}
                 updateQueuePosition={updateQueuePosition}
                 handleAccordionChange={handleAccordionChange}
+                addGameToLog={addGameToLog}
                 expanded={expanded}
             />
         ) : null,

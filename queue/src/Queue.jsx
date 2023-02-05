@@ -12,7 +12,7 @@ function Queue(props) {
     const [newPersonBGGID, setNewPersonBGGID] = useState('');
     const [newPersonID, setNewPersonID] = useState(null);
 
-    const { updateQueuePosition, queueOrder, user } = props;
+    const { updateQueuePosition, queueOrder, user, addGameToLog } = props;
 
     function handleShowNewPersonModal() { setActiveScreen(SCREENS.ADD_PERSON); }
 
@@ -70,7 +70,7 @@ function Queue(props) {
         <>
             <ConditionalDisplay condition={activeScreen === SCREENS.MAIN}>
                 <Box style={{ position: 'relative', paddingBottom: 50 }}>
-                    <PeopleAccordion queueOrder={queueOrder} updateQueuePosition={updateQueuePosition} />
+                    <PeopleAccordion queueOrder={queueOrder} updateQueuePosition={updateQueuePosition} addGameToLog={addGameToLog} />
                     <Stack spacing={2} direction={'row'} justifyContent={'flex-end'} style={{ marginTop: 24, marginRight: 12 }}>
                         <ConditionalDisplay condition={user.isAdmin}>
                             <Fab color="secondary" aria-label="add" onClick={handleShowNewPersonModal} variant="extended">
