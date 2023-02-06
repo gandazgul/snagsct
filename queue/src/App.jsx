@@ -14,7 +14,6 @@ import UserContext from './UserContext';
 import ResponsiveAppBar from './AppBar';
 import Queue from './Queue';
 import GameLog from './GameLog';
-import ConditionalDisplay from './ConditionalDisplay';
 
 import './App.css';
 
