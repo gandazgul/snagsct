@@ -29,9 +29,9 @@ function GameLog(props) {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Thumbnail</StyledTableCell>
-                            <StyledTableCell align="right">Name</StyledTableCell>
-                            <StyledTableCell align="right">Played By</StyledTableCell>
-                            <StyledTableCell align="right">Date & Time</StyledTableCell>
+                            <StyledTableCell>Name</StyledTableCell>
+                            <StyledTableCell>Played By</StyledTableCell>
+                            <StyledTableCell>Date & Time</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -41,11 +41,11 @@ function GameLog(props) {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    <img src={row.thumbnail} alt={row.name} />
+                                    <img src={row.thumbnail} alt={row.name} loading="lazy" width={100} />
                                 </TableCell>
-                                <TableCell align="right">{row.name}</TableCell>
-                                <TableCell align="right">{row.playedBy}</TableCell>
-                                <TableCell align="right">{new Date(row.playedAt.seconds * 1000).toLocaleString()}</TableCell>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.playedBy}</TableCell>
+                                <TableCell>{new Date(row.playedAt.seconds * 1000).toLocaleString()}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
