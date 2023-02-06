@@ -15,6 +15,7 @@ function GameLog(props) {
         [`&.${tableCellClasses.head}`]: {
             backgroundColor: theme.palette.primary.main,
             color: theme.typography.caption,
+            padding: 12,
         },
         [`&.${tableCellClasses.body}`]: {
             fontSize: 14,
@@ -24,7 +25,7 @@ function GameLog(props) {
     return (
         <div>
             <h2>Game Log</h2>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ borderRadius: 0 }}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>

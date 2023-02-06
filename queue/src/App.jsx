@@ -196,7 +196,7 @@ function App() {
             <UserContext.Provider value={currentUser}>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
-                <Container maxWidth="xl">
+                <Container maxWidth="xl" sx={{ padding: 0 }}>
                     <ResponsiveAppBar user={currentUser} handleSignOut={handleSignOut} />
                     {loadingComplete ? (
                         <>
@@ -205,7 +205,7 @@ function App() {
                         </>
                     ) : null}
                     {!currentUser ? (
-                        <Paper style={{ padding: 24, borderRadius: 0 }}>
+                        <Paper style={{ borderRadius: 0 }}>
                             <Typography variant="h5">Please sign in to see and participate in the queue.</Typography>
                             <StyledFirebaseAuth uiConfig={firebaseAuthUIConfig} firebaseAuth={firebase.auth()} />
                             <Typography variant="h6" style={{ marginTop: 24 }}>Privacy</Typography>

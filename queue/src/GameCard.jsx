@@ -39,6 +39,7 @@ function GameCard(props) {
                         image={thumbnail || 'https://picsum.photos/140'}
                         alt={name}
                         style={{ height: '50%', width: '50%', maxWidth: 150 }}
+                        loading="lazy"
                     />
                     <Typography component="p" variant="gameDescription" dangerouslySetInnerHTML={{ __html: description || '' }} />
                 </Box>

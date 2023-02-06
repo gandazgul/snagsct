@@ -69,7 +69,7 @@ function Queue(props) {
     return (
         <>
             <ConditionalDisplay condition={activeScreen === SCREENS.MAIN}>
-                <Box style={{ position: 'relative', paddingBottom: 50 }}>
+                <Box style={{ position: 'relative' }}>
                     <PeopleAccordion queueOrder={queueOrder} updateQueuePosition={updateQueuePosition} addGameToLog={addGameToLog} />
                     <Stack spacing={2} direction={'row'} justifyContent={'flex-end'} style={{ marginTop: 24, marginRight: 12 }}>
                         <ConditionalDisplay condition={user.isAdmin}>
